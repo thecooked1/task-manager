@@ -58,4 +58,18 @@ class TaskController extends Controller
         $task->update($validated);
         return redirect()->route('tasks.index')->with('success', 'Task updated successfully.');
     }
+
+    public function destroy(Task $task)
+    {
+        $task->delete();
+        return redirect()->route('tasks.index')->with('success', 'Task deleted successfully.');
+    }
+
+    public function toggleStatus(Task $task)
+    {
+        $task->update([
+            'status' => $task->status === 'pending' ? 'done' : 'pending'
+        ]);
+        return redirect()->back()->with('success', 'Task status updated.');
+    }
 }
