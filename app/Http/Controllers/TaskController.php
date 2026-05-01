@@ -11,19 +11,51 @@ class TaskController extends Controller
     {
         $query = Task::query();
 
-        // Search functionality (Bonus)
         if ($request->has('search')) {
             $query->where('title', 'like', '%' . $request->search . '%');
         }
 
-        // Filtering functionality
         if ($request->has('status') && in_array($request->status, ['pending', 'done'])) {
             $query->where('status', $request->status);
         }
-
-        // Pagination (Bonus)
+ 
         $tasks = $query->orderBy('deadline', 'asc')->paginate(5);
 
         return view('tasks.index', compact('tasks'));
+    }
+
+    public function create()
+    {
+        return view('tasks.create');
+    }
+
+    public function store(Request $request)
+    {
+        $validated = $request->validate([
+            'title' => 'required|max:255',
+            'description' => 'nullable',
+            'deadline' => 'nullable|date',
+        ]);
+
+        Task::create($validated);
+        return redirect()->route('tasks.index')->with('success', 'Task created successfully.');
+    }
+
+    public function edit(Task $task)
+    {
+        return view('tasks.edit', compact('task'));
+    }
+
+    public function update(Request $request, Task $task)
+    {
+        $validated = $request->validate([
+            'title' => 'required|max:255',
+            'description' => 'nullable',
+            'status' => 'required|in:pending,done',
+            'deadline' => 'nullable|date',
+        ]);
+
+        $task->update($validated);
+        return redirect()->route('tasks.index')->with('success', 'Task updated successfully.');
     }
 }
