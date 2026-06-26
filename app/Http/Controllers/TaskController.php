@@ -35,9 +35,14 @@ class TaskController extends Controller
             'title' => 'required|max:255',
             'description' => 'nullable',
             'deadline' => 'nullable|date',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048'
         ]);
 
         $validated['user_id'] = auth()->id();
+
+        if ($request->hasFile('image')) {
+        $validated['image_path'] = $request->file('image')->store('task_images', 'public');
+    }
         Task::create($validated);
         return redirect()->route('tasks.index')->with('success', 'Task created successfully.');
     }
@@ -54,7 +59,12 @@ class TaskController extends Controller
             'description' => 'nullable',
             'status' => 'required|in:pending,done',
             'deadline' => 'nullable|date',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048'
         ]);
+
+        if ($request->hasFile('image')) {
+        $validated['image_path'] = $request->file('image')->store('task_images', 'public');
+    }
 
         $task->update($validated);
         return redirect()->route('tasks.index')->with('success', 'Task updated successfully.');
