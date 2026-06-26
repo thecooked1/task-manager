@@ -43,7 +43,10 @@ class TaskController extends Controller
         if ($request->hasFile('image')) {
         $validated['image_path'] = $request->file('image')->store('task_images', 'public');
     }
-        Task::create($validated);
+        $task = Task::create($validated);
+        if ($request->has('tags')) {
+            $task->tags()->sync($request->tags);
+        }   
         return redirect()->route('tasks.index')->with('success', 'Task created successfully.');
     }
 
@@ -67,6 +70,9 @@ class TaskController extends Controller
     }
 
         $task->update($validated);
+        if ($request->has('tags')) {
+        $task->tags()->sync($request->tags);
+    }
         return redirect()->route('tasks.index')->with('success', 'Task updated successfully.');
     }
 

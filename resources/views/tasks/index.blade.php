@@ -63,6 +63,14 @@
                                             <img src="{{ asset('storage/' . $task->image_path) }}" alt="Task Attachment" class="img-thumbnail rounded" style="max-height: 120px;">
                                         </div>
                                     @endif
+                                    @if($task->tags->count() > 0)
+                                        <div class="mt-2">
+                                            @foreach($task->tags as $tag)
+                                                <span class="badge bg-secondary rounded-pill me-1">{{ $tag->name }}</span>
+                                            @endforeach
+                                        </div>
+                                    @endif
+                                    
                                     
                                     <div class="text-muted small">
                                         <i class="bi bi-calendar-event me-1"></i> 
