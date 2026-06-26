@@ -9,7 +9,7 @@ class TaskController extends Controller
 {
     public function index(Request $request)
     {
-        $query = Task::query();
+        $query = auth()->user()->tasks();
 
         if ($request->has('search')) {
             $query->where('title', 'like', '%' . $request->search . '%');
@@ -37,6 +37,7 @@ class TaskController extends Controller
             'deadline' => 'nullable|date',
         ]);
 
+        $validated['user_id'] = auth()->id();
         Task::create($validated);
         return redirect()->route('tasks.index')->with('success', 'Task created successfully.');
     }
