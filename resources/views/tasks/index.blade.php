@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('header', 'My Tasks')
+@section('header', 'Dashboard')
 
 @section('content')
 <div class="d-flex justify-content-between align-items-center mb-4">
