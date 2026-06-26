@@ -6,7 +6,8 @@
         <div class="card task-card p-4">
             <h4 class="fw-bold mb-4">Create New Task</h4>
             
-            <form action="{{ route('tasks.store') }}" method="POST">
+            <form action="{{ route('tasks.store') }}" method="POST" enctype="multipart/form-data">
+                @include('partials.errors')
                 @csrf
                 
                 <div class="form-floating mb-3">
@@ -22,6 +23,10 @@
                 <div class="form-floating mb-4">
                     <input type="date" name="deadline" class="form-control" id="dateInput">
                     <label for="dateInput">Deadline (Optional)</label>
+                </div>
+                <div class="mb-4">
+                    <label class="form-label text-muted small">Task Attachment (Image)</label>
+                    <input type="file" name="image" class="form-control">
                 </div>
 
                 <div class="d-flex gap-2">
